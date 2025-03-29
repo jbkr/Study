@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 576644259315669514}
+  - component: {fileID: -7098916952223027482}
   m_Layer: 5
   m_Name: ModeUI
   m_TagString: Untagged
@@ -36,6 +37,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &-7098916952223027482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357913349672313979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6135214a2f47a274881b39573af9ed4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeAttackButton: {fileID: 58864465304341220}
+  _stageModeButton: {fileID: 1528393734442124108}
 --- !u!1 &2923015679939557034
 GameObject:
   m_ObjectHideFlags: 0
@@ -49,7 +64,7 @@ GameObject:
   - component: {fileID: 1532441530518657397}
   - component: {fileID: 58864465304341220}
   m_Layer: 5
-  m_Name: Button
+  m_Name: TimeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,7 +321,7 @@ GameObject:
   - component: {fileID: 9010029269758761204}
   - component: {fileID: 1528393734442124108}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: StageButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
