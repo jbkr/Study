@@ -7,7 +7,6 @@ public class PangPlayer : MonoBehaviour
         IDLE,   // 가만히 서 있는 상태
         MOVE,   // 움직이는 상태
         HITTED,
-
     }
 
     [SerializeField]
@@ -21,6 +20,8 @@ public class PangPlayer : MonoBehaviour
     private float speed = 10f;
 
     private Transform trans;
+
+    private SpriteRenderer spriteRenderer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -28,17 +29,20 @@ public class PangPlayer : MonoBehaviour
         _currentState = STATE.IDLE;
 
         trans = GetComponent<Transform>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void IDLE_Action()
     {
         Debug.Log("Idle Action");
         MoveInput();
+
     }
     private void MOVE_Action()
     {
         Debug.Log("Move Action");
         MoveInput();
+        spriteRenderer.sprite = idleSprites[5];
     }
 
     private void HITTED_Action()
