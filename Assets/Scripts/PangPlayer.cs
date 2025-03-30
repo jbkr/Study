@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PangPlayer : MonoBehaviour
@@ -21,28 +23,75 @@ public class PangPlayer : MonoBehaviour
 
     private Transform trans;
 
-    private SpriteRenderer spriteRenderer;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
+    private SpriteRenderer _spriteRenderer;
+
+    private int i, j;
+
+    private bool isIdleState = false;
+
+    private bool isMovingState = false;
+
+    void Start()
     {
         Debug.Log("PangPlayerCreated");
         _currentState = STATE.IDLE;
 
         trans = GetComponent<Transform>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
+
+    //IEnumerator OnIdleState()
+    //{
+    //    while (true)
+    //    {
+    //        if (i > 5)
+    //        {
+    //            i = 0;
+    //        }
+    //        _spriteRenderer.sprite = idleSprites[i];
+    //        i++;
+    //        yield return new WaitForSeconds(0.2f);
+    //    }
+    //}
+
+    //IEnumerator OnMoveState()
+    //{
+    //    while (true)
+    //    {
+    //        if (j > 5)
+    //        {
+    //            j = 0;
+    //        }
+    //        _spriteRenderer.sprite = moveSprites[j];
+    //        j++;
+    //        yield return new WaitForSeconds(0.2f);
+    //    }
+    //}
 
     private void IDLE_Action()
     {
         Debug.Log("Idle Action");
         MoveInput();
 
+        if (i > 5)
+        {
+            i = 0;
+        }
+        _spriteRenderer.sprite = idleSprites[i];
+        i++;
     }
+
     private void MOVE_Action()
     {
         Debug.Log("Move Action");
         MoveInput();
-        spriteRenderer.sprite = idleSprites[5];
+
+        if (j > 5)
+        {
+            j = 0;
+        }
+        _spriteRenderer.sprite = moveSprites[j];
+        j++;
     }
 
     private void HITTED_Action()
@@ -65,7 +114,7 @@ public class PangPlayer : MonoBehaviour
             trans.position = pos;
         }
     }
-    // Update is called once per frame
+
     void Update()
     {
         switch (_currentState)
@@ -90,7 +139,7 @@ public class PangPlayer : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))     // 오른쪽 버튼
         {
-            _currentState = STATE.HITTED;
+            _currentState = STATE.IDLE;
         }
     }
 }
