@@ -19,17 +19,12 @@ public class PangPlayer : MonoBehaviour
 
     private STATE _currentState;
 
-    private float speed = 10f;
+    public float moveSpeed;
+    public float animationDelay;
 
     private Transform trans;
 
     private SpriteRenderer _spriteRenderer;
-
-    private int i, j;
-
-    private bool isIdleState = false;
-
-    private bool isMovingState = false;
 
     void Start()
     {
@@ -40,58 +35,60 @@ public class PangPlayer : MonoBehaviour
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    //IEnumerator OnIdleState()
-    //{
-    //    while (true)
-    //    {
-    //        if (i > 5)
-    //        {
-    //            i = 0;
-    //        }
-    //        _spriteRenderer.sprite = idleSprites[i];
-    //        i++;
-    //        yield return new WaitForSeconds(0.2f);
-    //    }
-    //}
+    IEnumerator AnimateCharacter(Sprite[] sprites)
+    {
+        while (true)
+        {
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                _spriteRenderer.sprite = sprites[i];
+                yield return new WaitForSeconds(animationDelay);
+            }
+        }
+    }
 
-    //IEnumerator OnMoveState()
-    //{
-    //    while (true)
-    //    {
-    //        if (j > 5)
-    //        {
-    //            j = 0;
-    //        }
-    //        _spriteRenderer.sprite = moveSprites[j];
-    //        j++;
-    //        yield return new WaitForSeconds(0.2f);
-    //    }
-    //}
+    private bool isIdleActionStarted = false;
+    private Coroutine idleCoroutine;
 
     private void IDLE_Action()
     {
         Debug.Log("Idle Action");
         MoveInput();
 
-        if (i > 5)
+        if (moveCoroutine != null)
         {
-            i = 0;
+            StopCoroutine(moveCoroutine);
+            isMoveActionStarted = false;
         }
-        _spriteRenderer.sprite = idleSprites[i];
-        i++;
+
+        if (!isIdleActionStarted)
+        {
+            idleCoroutine = StartCoroutine(AnimateCharacter(idleSprites));
+            isIdleActionStarted = true;
+        }
+
     }
+
+    private bool isMoveActionStarted = false;
+    private Coroutine moveCoroutine;
 
     private void MOVE_Action()
     {
         Debug.Log("Move Action");
         MoveInput();
 
-        if (j > 5)
+        if (idleCoroutine != null)
         {
-            j = 0;
+            StopCoroutine(idleCoroutine);
+            isIdleActionStarted = false;
         }
-        _spriteRenderer.sprite = moveSprites[j];
-        j++;
+
+        if (!isMoveActionStarted)
+        {
+            moveCoroutine = StartCoroutine(AnimateCharacter(moveSprites));
+            isMoveActionStarted = true;
+        }
+
     }
 
     private void HITTED_Action()
@@ -104,14 +101,16 @@ public class PangPlayer : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             Vector2 pos = trans.position;
-            pos.x -= Time.deltaTime * speed;
+            pos.x -= Time.deltaTime * moveSpeed;
             trans.position = pos;
+            _spriteRenderer.flipX = true;
         }
         if (Input.GetKey(KeyCode.D))
         {
             Vector2 pos = trans.position;
-            pos.x += Time.deltaTime * speed;
+            pos.x += Time.deltaTime * moveSpeed;
             trans.position = pos;
+            _spriteRenderer.flipX = false;
         }
     }
 

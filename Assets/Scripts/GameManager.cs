@@ -40,25 +40,13 @@ public class scripts : MonoBehaviour
     {
         Debug.Log("OnClickTimeAttackMode");
 
-        StartCoroutine(LoadSceneAsync("GameScene"));
-        ////SceneManager.LoadScene();     ==> 잘못된 방법, 버튼이 눌린 것만 표시, GameManager가 로드
-        //SceneManager.LoadScene("GameScene");
-
-        //GameObject playerGO = Resources.Load<GameObject>("Prefabs/PangPlayer");
-        //Instantiate(playerGO);
+        StartCoroutine(LoadSceneAsync("SampleScene"));
     }
 
     private IEnumerator LoadSceneAsync(string sceneName)
     {
-        Debug.Log("OnClickTimeAttackMode");
-        //SceneManager.LoadScene();     ==> 잘못된 방법, 버튼이 눌린 것만 표시, GameManager가 로드
-        //SceneManager.LoadScene(sceneName);
-
         // 씬이 다 로드된 이후에 다음 코드를 읽는다.
         yield return SceneManager.LoadSceneAsync(sceneName);
-
-        // 1초 기다림
-        //yield return new WaitForSeconds(1);       ==> 안 좋은 코드
 
         GameObject playerGO = Resources.Load<GameObject>("Prefabs/PangPlayer");
         Instantiate(playerGO);
