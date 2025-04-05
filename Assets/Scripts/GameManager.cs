@@ -40,7 +40,7 @@ public class scripts : MonoBehaviour
     {
         Debug.Log("OnClickTimeAttackMode");
 
-        StartCoroutine(LoadSceneAsync("SampleScene"));
+        StartCoroutine(LoadSceneAsync("GameScene"));
     }
 
     private IEnumerator LoadSceneAsync(string sceneName)

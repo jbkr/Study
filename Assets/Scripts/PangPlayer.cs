@@ -50,22 +50,36 @@ public class PangPlayer : MonoBehaviour
     private bool isIdleActionStarted = false;
     private Coroutine idleCoroutine;
 
+    private int currentSpriteIndex;
+    private float accTime;
+
     private void IDLE_Action()
     {
-        Debug.Log("Idle Action");
+        //Debug.Log("Idle Action");
         MoveInput();
 
-        if (moveCoroutine != null)
+        accTime += Time.deltaTime;
+        if (accTime >= 0.2f)
         {
-            StopCoroutine(moveCoroutine);
-            isMoveActionStarted = false;
+            if (currentSpriteIndex >= idleSprites.Length)
+                currentSpriteIndex = 0;
+
+            _spriteRenderer.sprite = idleSprites[currentSpriteIndex];
+            currentSpriteIndex++;
+            accTime = 0;
         }
 
-        if (!isIdleActionStarted)
-        {
-            idleCoroutine = StartCoroutine(AnimateCharacter(idleSprites));
-            isIdleActionStarted = true;
-        }
+        //if (moveCoroutine != null)
+        //{
+        //    StopCoroutine(moveCoroutine);
+        //    isMoveActionStarted = false;
+        //}
+
+        //if (!isIdleActionStarted)
+        //{
+        //    idleCoroutine = StartCoroutine(AnimateCharacter(idleSprites));
+        //    isIdleActionStarted = true;
+        //}
 
     }
 
@@ -74,26 +88,25 @@ public class PangPlayer : MonoBehaviour
 
     private void MOVE_Action()
     {
-        Debug.Log("Move Action");
+        //Debug.Log("Move Action");
         MoveInput();
 
-        if (idleCoroutine != null)
+        accTime += Time.deltaTime;
+        if (accTime >= 0.2f)
         {
-            StopCoroutine(idleCoroutine);
-            isIdleActionStarted = false;
-        }
+            if (currentSpriteIndex >= moveSprites.Length)
+                currentSpriteIndex = 0;
 
-        if (!isMoveActionStarted)
-        {
-            moveCoroutine = StartCoroutine(AnimateCharacter(moveSprites));
-            isMoveActionStarted = true;
+            _spriteRenderer.sprite = moveSprites[currentSpriteIndex];
+            currentSpriteIndex++;
+            accTime = 0;
         }
 
     }
 
     private void HITTED_Action()
     {
-        Debug.Log("Move Action");
+        //Debug.Log("Move Action");
     }
 
     private void MoveInput()
@@ -111,6 +124,15 @@ public class PangPlayer : MonoBehaviour
             pos.x += Time.deltaTime * moveSpeed;
             trans.position = pos;
             _spriteRenderer.flipX = false;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("bullet");
+            GameObject resourceBullet = Resources.Load<GameObject>("Prefabs/Bullet");
+            //GameObject sceneBullet = Instantiate<GameObject>(resourceBullet, new Vector3(transform.position.x, transform.position.y, 0f), Quaternion.identity);
+            GameObject sceneBullet = Instantiate(resourceBullet);
+
+            sceneBullet.transform.position = transform.position + new Vector3(0, 0.1f, 0);
         }
     }
 
@@ -131,10 +153,10 @@ public class PangPlayer : MonoBehaviour
                 break;
         }
 
-        if (Input.GetMouseButtonDown(0))     // 왼쪽 버튼
-        {
-            _currentState = STATE.MOVE;
-        }
+        //if (Input.GetMouseButtonDown(0))     // 왼쪽 버튼
+        //{
+        //    _currentState = STATE.MOVE;
+        //}
 
         if (Input.GetMouseButtonDown(1))     // 오른쪽 버튼
         {
