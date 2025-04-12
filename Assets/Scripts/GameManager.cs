@@ -2,11 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
-public class scripts : MonoBehaviour
+public class GameManager : MonoSingleton<GameManager>
 {
     [SerializeField]
-    private Button _startButton;
+    private UnityEngine.UI.Button _startButton;
 
     [SerializeField]
     private Transform _canvasTrans;
@@ -15,7 +16,8 @@ public class scripts : MonoBehaviour
     {
         // scene 변경 시에도 존재
         DontDestroyOnLoad(gameObject);
-
+        
+        //UIManager.Instance
         _startButton.onClick.AddListener(OnClickStartButton);
     }
 
@@ -48,8 +50,22 @@ public class scripts : MonoBehaviour
         // 씬이 다 로드된 이후에 다음 코드를 읽는다.
         yield return SceneManager.LoadSceneAsync(sceneName);
 
-        GameObject playerGO = Resources.Load<GameObject>("Prefabs/PangPlayer");
-        Instantiate(playerGO);
+        GameObject playerRes = Resources.Load<GameObject>("Prefabs/PangPlayer");
+        GameObject playerGo = Instantiate(playerRes);
+        playerGo.transform.position = new Vector3(0, -0.45f, 0);
+
+        GameObject bottomRes = Resources.Load<GameObject>("Prefabs/Bottom");
+        GameObject bottomGo = Instantiate(bottomRes);
+
+        GameObject gongRes = Resources.Load<GameObject>("Prefabs/Gong");
+        GameObject gongGo = Instantiate(gongRes);
+
+        gongGo.transform.position = new Vector3(0, 6, 0);
+
+        GameObject scoreUIRes = Resources.Load<GameObject>("Prefabs/ScoreUI");
+        GameObject scoreUIGo = Instantiate(scoreUIRes, _canvasTrans, false);
+        ScoreUI scoreUIComp = scoreUIGo.GetComponent<ScoreUI>();
+
     }
 
     private void OnClickStageMode()
@@ -57,6 +73,13 @@ public class scripts : MonoBehaviour
         Debug.Log("OnClickStageMode");
         SceneManager.LoadScene("GameScene");
 
+    }
+
+    public void CreateEffect(Position trans)
+    {
+        //GameObject explosionRes = Resources.Load<ExplosionEffect>("Prefabs/ExplosionEffect");
+        //ExplosionEffect explosionEffectGo = Instantiate(explosionRes);
+        //explosionEffectGo.transform.position = trans;
     }
 
     void Update()
